@@ -1,6 +1,6 @@
 # seleniumframework
 
-###This is a sample selenium framework I created from scratch.
+###This is a simple selenium framework I created from scratch.
 Language used is Java
 
 
