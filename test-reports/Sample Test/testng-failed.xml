@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" verbose="0" name="Failed suite [Sample Test]">
+  <test name="Sample Google Test(failed)">
+    <classes>
+      <class name="acn.test.GoogleTest">
+        <methods>
+          <include name="testCase_1_Chrome"/>
+          <include name="endTest"/>
+        </methods>
+      </class> <!-- acn.test.GoogleTest -->
+    </classes>
+  </test> <!-- Sample Google Test(failed) -->
+</suite> <!-- Failed suite [Sample Test] -->
