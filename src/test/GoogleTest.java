@@ -45,7 +45,7 @@ public class GoogleTest extends BaseTest {
 		Thread.sleep(2000);
 		assertTextPresentInElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH,
 				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA));
-		takescreenshot("GoogleTest_testCase_1_Chrome_step_3");
+		takescreenshot("test_git");
 
 		//dataProvider.close();
 
