@@ -1,6 +1,6 @@
 # seleniumframework
 
-A simple selenium framework I created. This is using TestNG as testing framework.
+A simple selenium project with samples. This is using TestNG as testing framework.
 Language used is Java
 
 
