@@ -2,9 +2,6 @@ package common;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
@@ -14,19 +11,30 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.opera.OperaDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.AfterMethod;
 
+import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.EdgeDriverManager;
+import io.github.bonigarcia.wdm.FirefoxDriverManager;
+import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
+import io.github.bonigarcia.wdm.OperaDriverManager;
+
 public abstract class BaseTest {
 
-	final String defaultChromeDriverPath = "resources\\drivers\\chromedriver.exe";
+	final String defaultChromeDriverPath = "resources\\drivers\\chromedriver_2.29.exe";
+	final String defaultIEEdgeDriverPath = "resources\\drivers\\MicrosoftWebDriver_3.14393.exe";
 	protected WebDriver driver;
 	protected TestDataProvider testDataProvider;
 	String screenShotsPath;
 	String testCaseName;
 
-	public void startTest(DriverType driverType, String screenShotsPath, TestDataProvider testDataProvider) {
+	public void startTest(String browser, String screenShotsPath, TestDataProvider testDataProvider) {
 
 		this.testDataProvider = testDataProvider;
 		this.screenShotsPath = screenShotsPath;
@@ -36,16 +44,43 @@ public abstract class BaseTest {
 		log(">>>>> Executing " + testCaseName + " <<<<<");
 		log("");
 
-		if (driverType.equals(DriverType.CHROME)) {
-			Logger.log("Setting Chrome Driver as default driver");
+		if (browser.equalsIgnoreCase("chrome")) {
+			Logger.log("Running in Google Chrome");
 			System.setProperty("webdriver.chrome.driver", defaultChromeDriverPath);
-			log("Running test in Chrome");
 			driver = new ChromeDriver();
-
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-			driver.manage().window().maximize();
+			//ChromeDriverManager.getInstace().setup();
+			driver = new ChromeDriver();
 		}
+		
+		else if(browser.equalsIgnoreCase("firefox")){
+			Logger.log("Running in Firefox");
+			FirefoxDriverManager.getInstance().setup();
+			driver = new FirefoxDriver();
+		}
+		else if(browser.equalsIgnoreCase("edge")){
+			Logger.log("Running in Internet Explorer Edge");
+			System.setProperty("webdriver.edge.driver", defaultIEEdgeDriverPath);
+			/*EdgeDriverManager.getInstance().setup();
+			System.setProperty("wdm.override", "true");
+			System.setProperty("wdm.edgeVersion", "3.14393");*/
+			driver = new EdgeDriver();
+		}
+		else if(browser.equalsIgnoreCase("ie")){
+			Logger.log("Running in Internet Explorer");
+			InternetExplorerDriverManager.getInstance().setup();
+			driver = new InternetExplorerDriver();
+		}
+		else if(browser.equalsIgnoreCase("opera")){
+			Logger.log("Running in Opera");
+			OperaDriverManager.getInstance().setup();
+			driver = new OperaDriver();
+		}
+		//TODO: add Safari
+		
+		//Default timeout setting for our drivers - 10secs
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+		driver.manage().window().maximize();
 
 	}
 
@@ -86,8 +121,7 @@ public abstract class BaseTest {
 			 * "C:\\Workspace\\SeleniumProject\\test-reports\\screenshots\\" +
 			 * getFileName(this.getClass().getSimpleName())));
 			 */
-			FileUtils.copyFile(sourceFile, new File(
-					screenShotsPath + screenShotName + ".png"));
+			FileUtils.copyFile(sourceFile, new File(screenShotsPath + screenShotName + ".png"));
 
 		} catch (Exception e) {
 			log("Screenshot is not created.");
@@ -95,15 +129,14 @@ public abstract class BaseTest {
 		}
 	}
 
-	/*private String getFileName(String nameTest) throws IOException {
-		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy_hh.mm.ss");
-		Date date = new Date();
-		return dateFormat.format(date) + "_" + nameTest + ".png";
-	}*/
+	/*
+	 * private String getFileName(String nameTest) throws IOException {
+	 * DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy_hh.mm.ss"); Date
+	 * date = new Date(); return dateFormat.format(date) + "_" + nameTest +
+	 * ".png"; }
+	 */
 
 	public void assertTextPresentInElement(String locator, LocatorType locType, String valueToCheck) {
-
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
 		if (locType.equals(LocatorType.ID)) {
 
@@ -128,8 +161,6 @@ public abstract class BaseTest {
 	}
 
 	public void assertElementPresentInPage(String locator, LocatorType locType) {
-
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
 		Assert.assertTrue(isElementPresent(locator, locType));
 		log("Element is present in the page.");

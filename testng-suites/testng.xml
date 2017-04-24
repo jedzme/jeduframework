@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Sample Test" verbose="2">
-	
-	<test name="Sample Google Test">    
- 	 <classes>
-  	     	 <class name="test.GoogleTest"/>      
-    	</classes>
-  	</test>    
+<suite name="Sample Test" verbose="2" parallel="none">
+
+	<test name="Sample Test in Chrome">
+		<parameter name="browser" value="Chrome" />
+		<classes>
+			<class name="test.GoogleTest" />
+		</classes>
+	</test>
+	<test name="Sample Test in Microsoft Edge">
+		<parameter name="browser" value="Edge" />
+		<classes>
+			<class name="test.GoogleTest" />
+		</classes>
+	</test>
 </suite> 

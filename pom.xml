@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>2.46.0</version>
+			<version>3.3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -102,6 +102,13 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-excelant</artifactId>
 			<version>3.12</version>
+		</dependency>
+
+		<!-- This WebDriverManager automatically downloads all webdrivers for all browsers -->
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>1.6.2</version>
 		</dependency>
 	</dependencies>
 	<profiles>

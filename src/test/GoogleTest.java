@@ -1,5 +1,7 @@
 package test;
 
+import org.openqa.selenium.By;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import common.BaseTest;
@@ -23,10 +25,12 @@ public class GoogleTest extends BaseTest {
 	private static final int COLUMN_SAMPLE_EXPECTED_DATA = 3;
 
 	@Test
-	public void testCase_1_Chrome() throws Exception {
+	@Parameters("browser")
+	public void whenSearchingATextSuccessfully(String browser) throws Exception {
+		
 
 		ExcelDataProvider dataProvider = new ExcelDataProvider(xcelFilePath, xcelSheetName);
-		startTest(DriverType.CHROME, screenShotPath, dataProvider);
+		startTest(browser, screenShotPath, dataProvider);
 
 		googlePage = new GooglePage(this.driver);
 
@@ -42,7 +46,6 @@ public class GoogleTest extends BaseTest {
 		googlePage.enterSearchBar(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_INPUT_DATA));
 		takescreenshot("GoogleTest_testCase_1_Chrome_step_2");
 		googlePage.clickSearchButton();
-		Thread.sleep(2000);
 		assertTextPresentInElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH,
 				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA));
 		takescreenshot("test_git");
