@@ -1,11 +1,8 @@
 package test;
 
-import org.openqa.selenium.By;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import common.BaseTest;
-import common.DriverType;
 import common.ExcelDataProvider;
 import common.LocatorType;
 import common.Logger;
@@ -17,20 +14,20 @@ public class GoogleTest extends BaseTest {
 
 	private final String xcelSheetName = "Sample Sheet";
 	private final String xcelFilePath = "resources\\SampleTestData.xlsx";
-	private final String screenShotPath = "C:\\testscreenshots\\";
 
 	// private static final int COLUMN_TEST_CASE_NAME = 0;
 	private static final int COLUMN_URL = 1;
-	private static final int COLUMN_SAMPLE_INPUT_DATA = 2;
-	private static final int COLUMN_SAMPLE_EXPECTED_DATA = 3;
+	private static final int COLUMN_SAMPLE_INPUT_DATA_1 = 2;
+	private static final int COLUMN_SAMPLE_EXPECTED_DATA_1 = 3;
+	private static final int COLUMN_SAMPLE_INPUT_DATA_2 = 4;
+	private static final int COLUMN_SAMPLE_EXPECTED_DATA_2 = 5;
 
 	@Test
-	@Parameters("browser")
-	public void whenSearchingATextSuccessfully(String browser) throws Exception {
+	public void whenSearchingATextSuccessfully() throws Exception {
 		
 
 		ExcelDataProvider dataProvider = new ExcelDataProvider(xcelFilePath, xcelSheetName);
-		startTest(browser, screenShotPath, dataProvider);
+		setTestDataProvider(dataProvider);
 
 		googlePage = new GooglePage(this.driver);
 
@@ -40,18 +37,48 @@ public class GoogleTest extends BaseTest {
 		driver.get(webAppUrl);
 		log("Opened " + webAppUrl);
 
-		takescreenshot("GoogleTest_testCase_1_Chrome_step_1");
+		takescreenshot("GoogleTest_testCase1_step_1");
 		assertElementPresentInPage(GooglePage.SEARCH_BAR_NAME, LocatorType.NAME);
 
-		googlePage.enterSearchBar(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_INPUT_DATA));
-		takescreenshot("GoogleTest_testCase_1_Chrome_step_2");
+		googlePage.enterSearchBar(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_INPUT_DATA_1));
+		takescreenshot("GoogleTest_testCase1_step_2");
 		googlePage.clickSearchButton();
 		assertTextPresentInElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH,
-				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA));
-		takescreenshot("test_git");
+				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_1));
+		takescreenshot("GoogleTest_testCase1_step_3");
 
-		//dataProvider.close();
+		dataProvider.close();
 
 	}
+	
+	@Test
+	public void whenSearchingATextSuccessfully2() throws Exception {
+		
+
+		ExcelDataProvider dataProvider = new ExcelDataProvider(xcelFilePath, xcelSheetName);
+		setTestDataProvider(dataProvider);
+
+		googlePage = new GooglePage(this.driver);
+
+		int testCaseRow = dataProvider.getTestCaseRow(getTestCaseName());
+		Logger.log("TestCaseRow: " + testCaseRow);
+		String webAppUrl = dataProvider.getCellData(testCaseRow, COLUMN_URL);
+		driver.get(webAppUrl);
+		log("Opened " + webAppUrl);
+
+		assertElementPresentInPage(GooglePage.SEARCH_BAR_NAME, LocatorType.NAME);
+		takescreenshot("GoogleTest_testCase2_step_1");
+
+		googlePage.enterSearchBar(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_INPUT_DATA_2));
+		takescreenshot("GoogleTest_testCase2_step_2");
+		googlePage.clickSearchButton();
+		assertTextPresentInElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH,
+				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_2));
+		takescreenshot("GoogleTest_testCase2_step_3");
+
+		dataProvider.close();
+
+	}
+
 
 }

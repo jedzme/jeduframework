@@ -20,7 +20,7 @@ public class GooglePage extends BasePage{
 
 	public void enterSearchBar(String input) throws Exception{
 		enterText(SEARCH_BAR_NAME, LocatorType.NAME, input);
-		Logger.log("Entered value in search bar...");
+		Logger.log("Entered value in search bar: " + input);
 	}	
 	
 	public void clickSearchButton(){

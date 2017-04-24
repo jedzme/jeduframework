@@ -17,28 +17,32 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 
-import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.EdgeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
 import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
 import io.github.bonigarcia.wdm.OperaDriverManager;
 
 public abstract class BaseTest {
 
-	final String defaultChromeDriverPath = "resources\\drivers\\chromedriver_2.29.exe";
-	final String defaultIEEdgeDriverPath = "resources\\drivers\\MicrosoftWebDriver_3.14393.exe";
 	protected WebDriver driver;
 	protected TestDataProvider testDataProvider;
-	String screenShotsPath;
-	String testCaseName;
+	protected String screenShotsPath;
+	protected String testCaseName;
+	protected boolean enableScreenshots;
+	protected String webBrowser;
 
-	public void startTest(String browser, String screenShotsPath, TestDataProvider testDataProvider) {
-
-		this.testDataProvider = testDataProvider;
-		this.screenShotsPath = screenShotsPath;
+	@BeforeTest
+	@Parameters({ "browser", "driverPath", "enableScreenshots", "screenShotsPath" })
+	public void startTest(String browser, String driverPath, boolean enableScreenshots, String screenShotsPath) {
 		this.testCaseName = this.getClass().getSimpleName();
+		this.enableScreenshots = enableScreenshots;
+		this.screenShotsPath = screenShotsPath;
+		
+		log("=====Settings=====");
+		log("Screenshots: " + "[Enabled: " + enableScreenshots + "]" + "," + "[Location: " + screenShotsPath + "]");
 
 		log("");
 		log(">>>>> Executing " + testCaseName + " <<<<<");
@@ -46,41 +50,50 @@ public abstract class BaseTest {
 
 		if (browser.equalsIgnoreCase("chrome")) {
 			Logger.log("Running in Google Chrome");
-			System.setProperty("webdriver.chrome.driver", defaultChromeDriverPath);
-			driver = new ChromeDriver();
-			//ChromeDriverManager.getInstace().setup();
+			this.webBrowser = "Chrome";
+			System.setProperty("webdriver.chrome.driver", driverPath);
+			// ChromeDriverManager.getInstace().setup();
 			driver = new ChromeDriver();
 		}
-		
-		else if(browser.equalsIgnoreCase("firefox")){
+
+		else if (browser.equalsIgnoreCase("firefox")) {
 			Logger.log("Running in Firefox");
+			this.webBrowser = "FireFox";
 			FirefoxDriverManager.getInstance().setup();
 			driver = new FirefoxDriver();
-		}
-		else if(browser.equalsIgnoreCase("edge")){
-			Logger.log("Running in Internet Explorer Edge");
-			System.setProperty("webdriver.edge.driver", defaultIEEdgeDriverPath);
-			/*EdgeDriverManager.getInstance().setup();
-			System.setProperty("wdm.override", "true");
-			System.setProperty("wdm.edgeVersion", "3.14393");*/
+		} else if (browser.equalsIgnoreCase("edge")) {
+			Logger.log("Running in Microsoft Edge");
+			this.webBrowser = "Microsoft Edge";
+			System.setProperty("webdriver.edge.driver", driverPath);
+			/*
+			 * EdgeDriverManager.getInstance().setup();
+			 * System.setProperty("wdm.override", "true");
+			 * System.setProperty("wdm.edgeVersion", "3.14393");
+			 */
 			driver = new EdgeDriver();
-		}
-		else if(browser.equalsIgnoreCase("ie")){
+		} else if (browser.equalsIgnoreCase("ie")) {
 			Logger.log("Running in Internet Explorer");
+			this.webBrowser = "Internet Explorer";
 			InternetExplorerDriverManager.getInstance().setup();
 			driver = new InternetExplorerDriver();
-		}
-		else if(browser.equalsIgnoreCase("opera")){
+		} else if (browser.equalsIgnoreCase("opera")) {
 			Logger.log("Running in Opera");
+			this.webBrowser = "Opera";
 			OperaDriverManager.getInstance().setup();
 			driver = new OperaDriver();
 		}
-		//TODO: add Safari
-		
-		//Default timeout setting for our drivers - 10secs
+		// TODO: add Safari and implement WebDriverManager to all Drivers
+
+		// Default timeout setting for our drivers - 10secs
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		
+
 		driver.manage().window().maximize();
+
+	}
+
+	public void setTestDataProvider(TestDataProvider testDataProvider) {
+
+		this.testDataProvider = testDataProvider;
 
 	}
 
@@ -88,7 +101,7 @@ public abstract class BaseTest {
 		return this.testCaseName;
 	}
 
-	@AfterMethod
+	@AfterTest
 	public void endTest() throws IOException {
 		String TestCaseName = this.getClass().getSimpleName();
 		log("");
@@ -114,18 +127,21 @@ public abstract class BaseTest {
 
 	public void takescreenshot(String screenShotName) throws IOException {
 		File sourceFile;
-		try {
-			sourceFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-			/*
-			 * FileUtils.copyFile(scrFile, new File(
-			 * "C:\\Workspace\\SeleniumProject\\test-reports\\screenshots\\" +
-			 * getFileName(this.getClass().getSimpleName())));
-			 */
-			FileUtils.copyFile(sourceFile, new File(screenShotsPath + screenShotName + ".png"));
 
-		} catch (Exception e) {
-			log("Screenshot is not created.");
-			e.printStackTrace();
+		if (enableScreenshots) {
+			try {
+				sourceFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+				/*
+				 * FileUtils.copyFile(scrFile, new File(
+				 * "C:\\Workspace\\SeleniumProject\\test-reports\\screenshots\\"
+				 * + getFileName(this.getClass().getSimpleName())));
+				 */
+				FileUtils.copyFile(sourceFile, new File(screenShotsPath + webBrowser + "_"+ screenShotName + ".png"));
+
+			} catch (Exception e) {
+				log("Screenshot is not created.");
+				e.printStackTrace();
+			}
 		}
 	}
 
