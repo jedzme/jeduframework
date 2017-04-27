@@ -13,7 +13,7 @@ public class GoogleTest extends BaseTest {
 	GooglePage googlePage;
 
 	private final String xcelSheetName = "Sample Sheet";
-	private final String xcelFilePath = "resources\\SampleTestData.xlsx";
+	private final String xcelFilePath = "src\\testdata\\SampleTestData.xlsx";
 
 	// private static final int COLUMN_TEST_CASE_NAME = 0;
 	private static final int COLUMN_URL = 1;
@@ -38,13 +38,13 @@ public class GoogleTest extends BaseTest {
 		log("Opened " + webAppUrl);
 
 		takescreenshot("GoogleTest_testCase1_step_1");
-		assertElementPresentInPage(GooglePage.SEARCH_BAR_NAME, LocatorType.NAME);
+		assertElementPresentInPage(GooglePage.SEARCH_BAR_NAME, LocatorType.NAME, 0);
 
 		googlePage.enterSearchBar(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_INPUT_DATA_1));
 		takescreenshot("GoogleTest_testCase1_step_2");
 		googlePage.clickSearchButton();
 		assertTextPresentInElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH,
-				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_1));
+				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_1), 0);
 		takescreenshot("GoogleTest_testCase1_step_3");
 
 		dataProvider.close();
@@ -66,14 +66,14 @@ public class GoogleTest extends BaseTest {
 		driver.get(webAppUrl);
 		log("Opened " + webAppUrl);
 
-		assertElementPresentInPage(GooglePage.SEARCH_BAR_NAME, LocatorType.NAME);
+		assertElementPresentInPage(GooglePage.SEARCH_BAR_NAME, LocatorType.NAME, 0);
 		takescreenshot("GoogleTest_testCase2_step_1");
 
 		googlePage.enterSearchBar(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_INPUT_DATA_2));
 		takescreenshot("GoogleTest_testCase2_step_2");
 		googlePage.clickSearchButton();
 		assertTextPresentInElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH,
-				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_2));
+				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_2), 0);
 		takescreenshot("GoogleTest_testCase2_step_3");
 
 		dataProvider.close();

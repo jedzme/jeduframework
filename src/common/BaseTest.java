@@ -15,6 +15,8 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.AfterTest;
@@ -36,11 +38,12 @@ public abstract class BaseTest {
 
 	@BeforeTest
 	@Parameters({ "browser", "driverPath", "enableScreenshots", "screenShotsPath", "defaultWDTimeOut" })
-	public void startTest(String browser, String driverPath, boolean enableScreenshots, String screenShotsPath, int defaultWDTimeOut) {
+	public void startTest(String browser, String driverPath, boolean enableScreenshots, String screenShotsPath,
+			int defaultWDTimeOut) {
 		this.testCaseName = this.getClass().getSimpleName();
 		this.enableScreenshots = enableScreenshots;
 		this.screenShotsPath = screenShotsPath;
-		
+
 		log("=====Settings=====");
 		log("Screenshots: " + "[Enabled: " + enableScreenshots + "]" + "," + "[Location: " + screenShotsPath + "]");
 
@@ -136,7 +139,7 @@ public abstract class BaseTest {
 				 * "C:\\Workspace\\SeleniumProject\\test-reports\\screenshots\\"
 				 * + getFileName(this.getClass().getSimpleName())));
 				 */
-				FileUtils.copyFile(sourceFile, new File(screenShotsPath + webBrowser + "_"+ screenShotName + ".png"));
+				FileUtils.copyFile(sourceFile, new File(screenShotsPath + webBrowser + "_" + screenShotName + ".png"));
 
 			} catch (Exception e) {
 				log("Screenshot is not created.");
@@ -145,62 +148,195 @@ public abstract class BaseTest {
 		}
 	}
 
-	/*
-	 * private String getFileName(String nameTest) throws IOException {
-	 * DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy_hh.mm.ss"); Date
-	 * date = new Date(); return dateFormat.format(date) + "_" + nameTest +
-	 * ".png"; }
+	/**
+	 * This assert if an exact Text is present in the specified Element
+	 * 
+	 * @param String locator - i.e \\*[@id='sampleID'
+	 * @param LocatorType locType - i.e LocatorType.XPATH
+	 * @param String valueToCheck - any text
+	 * @param int timeOutInSeconds - if 0, then does not invoke explicit waiting
+	 *            
+	 * 
+	 * 
 	 */
+	public void assertTextPresentInElement(String locator, LocatorType locType, String valueToCheck,
+			int timeOutInSeconds) {
 
-	public void assertTextPresentInElement(String locator, LocatorType locType, String valueToCheck) {
+		if (timeOutInSeconds > 0) {
+			if (locType.equals(LocatorType.ID)) {
 
-		if (locType.equals(LocatorType.ID)) {
+				Assert.assertTrue((new WebDriverWait(driver, timeOutInSeconds))
+						.until(ExpectedConditions.presenceOfElementLocated(By.id(locator))).getText()
+						.equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
 
-			Assert.assertTrue(driver.findElement(By.id(locator)).getText().equals(valueToCheck));
-			log("The text " + valueToCheck + " is present in the web element.");
+			} else if (locType.equals(LocatorType.NAME)) {
 
-		} else if (locType.equals(LocatorType.NAME)) {
+				Assert.assertTrue((new WebDriverWait(driver, timeOutInSeconds))
+						.until(ExpectedConditions.presenceOfElementLocated(By.name(locator))).getText()
+						.equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
 
-			Assert.assertTrue(driver.findElement(By.name(locator)).getText().equals(valueToCheck));
-			log("The text " + valueToCheck + " is present in the web element.");
+			} else if (locType.equals(LocatorType.CLASS)) {
 
-		} else if (locType.equals(LocatorType.CLASS)) {
+				Assert.assertTrue((new WebDriverWait(driver, timeOutInSeconds))
+						.until(ExpectedConditions.presenceOfElementLocated(By.className(locator))).getText()
+						.equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
 
-			Assert.assertTrue(driver.findElement(By.className(locator)).getText().equals(valueToCheck));
-			log("The text " + valueToCheck + " is present in the web element.");
+			} else if (locType.equals(LocatorType.XPATH)) {
 
-		} else {
+				Assert.assertTrue((new WebDriverWait(driver, timeOutInSeconds))
+						.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator))).getText()
+						.equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+			}
 
-			Assert.assertTrue(driver.findElement(By.xpath(locator)).getText().equals(valueToCheck));
-			log("The text " + valueToCheck + " is present in the web element.");
+			else if (locType.equals(LocatorType.LINKTEXT)) {
+
+				Assert.assertTrue((new WebDriverWait(driver, timeOutInSeconds))
+						.until(ExpectedConditions.presenceOfElementLocated(By.linkText(locator))).getText()
+						.equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+			} else if (locType.equals(LocatorType.CSS)) {
+
+				Assert.assertTrue((new WebDriverWait(driver, timeOutInSeconds))
+						.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(locator))).getText()
+						.equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+			} else if (locType.equals(LocatorType.PARTIALLINKTEXT)) {
+
+				Assert.assertTrue((new WebDriverWait(driver, timeOutInSeconds))
+						.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(locator))).getText()
+						.equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+			} else {
+
+			}
+
 		}
+
+		else {
+			if (locType.equals(LocatorType.ID)) {
+
+				Assert.assertTrue(driver.findElement(By.id(locator)).getText().equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+
+			} else if (locType.equals(LocatorType.NAME)) {
+
+				Assert.assertTrue(driver.findElement(By.name(locator)).getText().equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+
+			} else if (locType.equals(LocatorType.CLASS)) {
+
+				Assert.assertTrue(driver.findElement(By.className(locator)).getText().equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+
+			} else if (locType.equals(LocatorType.XPATH)) {
+
+				Assert.assertTrue(driver.findElement(By.xpath(locator)).getText().equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+			} else if (locType.equals(LocatorType.LINKTEXT)) {
+
+				Assert.assertTrue(driver.findElement(By.linkText(locator)).getText().equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+			} else if (locType.equals(LocatorType.CSS)) {
+
+				Assert.assertTrue(driver.findElement(By.cssSelector(locator)).getText().equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+			}
+
+			else if (locType.equals(LocatorType.PARTIALLINKTEXT)) {
+
+				Assert.assertTrue(driver.findElement(By.partialLinkText(locator)).getText().equals(valueToCheck));
+				log("The text " + valueToCheck + " is present in the web element.");
+			} else {
+
+			}
+		}
+
 	}
 
-	public void assertElementPresentInPage(String locator, LocatorType locType) {
+	/**
+	 * This assert if an Element is present in the current page
+	 * @param String locator - i.e \\*[@id='sampleID'
+	 * @param LocatorType locType - i.e LocatorType.XPATH
+	 * @param int timeOutInSeconds - if 0, then does not invoke explicit waiting
+	 * 
+	 */
+	public void assertElementPresentInPage(String locator, LocatorType locType, int timeOutInSeconds) {
 
-		Assert.assertTrue(isElementPresent(locator, locType));
+		Assert.assertTrue(isElementPresent(locator, locType, timeOutInSeconds));
 		log("Element is present in the page.");
 
 	}
 
-	public Boolean isElementPresent(String locator, LocatorType locType) {
+	private Boolean isElementPresent(String locator, LocatorType locType, int timeOutInSeconds) {
 		boolean found = true;
+
 		try {
-			if (locType.equals(LocatorType.ID)) {
+			if (timeOutInSeconds > 0) {
+				if (locType.equals(LocatorType.ID)) {
 
-				driver.findElement(By.id(locator));
+					new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.id(locator)));
 
-			} else if (locType.equals(LocatorType.NAME)) {
+				} else if (locType.equals(LocatorType.NAME)) {
 
-				driver.findElement(By.name(locator));
+					new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.name(locator)));
 
-			} else if (locType.equals(LocatorType.CLASS)) {
+				} else if (locType.equals(LocatorType.CLASS)) {
 
-				driver.findElement(By.className(locator));
+					new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.className(locator)));
 
+				} else if (locType.equals(LocatorType.XPATH)) {
+
+					new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator)));
+
+				} else if (locType.equals(LocatorType.CSS)) {
+
+					new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(locator)));
+
+				} else if (locType.equals(LocatorType.PARTIALLINKTEXT)) {
+
+					new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(locator)));
+
+				} else {
+
+				}
 			} else {
+				if (locType.equals(LocatorType.ID)) {
 
-				driver.findElement(By.xpath(locator));
+					driver.findElement(By.id(locator));
+
+				} else if (locType.equals(LocatorType.NAME)) {
+
+					driver.findElement(By.name(locator));
+
+				} else if (locType.equals(LocatorType.CLASS)) {
+
+					driver.findElement(By.className(locator));
+
+				} else if (locType.equals(LocatorType.XPATH)) {
+
+					driver.findElement(By.xpath(locator));
+
+				} else if (locType.equals(LocatorType.CSS)) {
+
+					driver.findElement(By.cssSelector(locator));
+
+				} else if (locType.equals(LocatorType.PARTIALLINKTEXT)) {
+
+					driver.findElement(By.partialLinkText(locator));
+
+				} else {
+
+				}
 
 			}
 

@@ -9,7 +9,7 @@
 		<parameter name="browser" value="Chrome" />
 		<parameter name="driverPath" value="resources\\drivers\\chromedriver_2.29.exe" />
 		<classes>
-			<class name="test.GoogleTest" />
+			<class name="test.DemoAutTest" />
 		</classes>
 	</test>
 	<!-- <test name="Sample Test in Microsoft Edge">
