@@ -3,6 +3,7 @@
 <suite name="Sample Test" verbose="2" parallel="none">
 
 	<parameter name="enableScreenshots" value="true" />
+	<parameter name="defaultWDTimeOut" value="15" />
 	<parameter name="screenShotsPath" value="C:\\testscreenshots\\" />
 	<test name="Sample Test in Chrome">
 		<parameter name="browser" value="Chrome" />
@@ -11,12 +12,12 @@
 			<class name="test.GoogleTest" />
 		</classes>
 	</test>
-	<test name="Sample Test in Microsoft Edge">
+	<!-- <test name="Sample Test in Microsoft Edge">
 		<parameter name="browser" value="Edge" />
 		<parameter name="driverPath"
 			value="resources\\drivers\\MicrosoftWebDriver_3.14393.exe" />
 		<classes>
 			<class name="test.GoogleTest" />
 		</classes>
-	</test>
+	</test> -->
 </suite> 

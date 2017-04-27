@@ -57,6 +57,10 @@
 							<directory>test-reports</directory>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
+						<fileset>
+							<directory>target</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
 					</filesets>
 				</configuration>
 			</plugin>
@@ -104,13 +108,14 @@
 			<version>3.12</version>
 		</dependency>
 
-		<!-- This WebDriverManager automatically downloads all webdrivers for all browsers -->
+		<!-- This WebDriverManager automatically downloads all webdrivers for all 
+			browsers -->
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		
+
 	</dependencies>
 	<profiles>
 		<profile>

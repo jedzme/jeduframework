@@ -35,8 +35,8 @@ public abstract class BaseTest {
 	protected String webBrowser;
 
 	@BeforeTest
-	@Parameters({ "browser", "driverPath", "enableScreenshots", "screenShotsPath" })
-	public void startTest(String browser, String driverPath, boolean enableScreenshots, String screenShotsPath) {
+	@Parameters({ "browser", "driverPath", "enableScreenshots", "screenShotsPath", "defaultWDTimeOut" })
+	public void startTest(String browser, String driverPath, boolean enableScreenshots, String screenShotsPath, int defaultWDTimeOut) {
 		this.testCaseName = this.getClass().getSimpleName();
 		this.enableScreenshots = enableScreenshots;
 		this.screenShotsPath = screenShotsPath;
@@ -85,7 +85,7 @@ public abstract class BaseTest {
 		// TODO: add Safari and implement WebDriverManager to all Drivers
 
 		// Default timeout setting for our drivers - 10secs
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(defaultWDTimeOut, TimeUnit.SECONDS);
 
 		driver.manage().window().maximize();
 
