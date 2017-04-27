@@ -77,7 +77,6 @@ public abstract class BasePage {
 	     * 
 	     * @param locator
 	     * 
-	     * @author lenard.g.magpantay
 	     * 
 	     */
         
@@ -94,7 +93,6 @@ public abstract class BasePage {
          * @param locator
          * @param value
          *
-         * @author lenard.g.magpantay
             element.submit();
          * 
          */
@@ -110,8 +108,6 @@ public abstract class BasePage {
          * 
          * @param locator
          * @param value
-         *
-         * @author lenard.g.magpantay
          * 
          */
         public void selectDropdownByVisibleText(String locator, LocatorType locType, String value){
