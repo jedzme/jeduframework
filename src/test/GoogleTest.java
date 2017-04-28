@@ -47,8 +47,6 @@ public class GoogleTest extends BaseTest {
 				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_1), 0);
 		takescreenshot("GoogleTest_testCase1_step_3");
 
-		dataProvider.close();
-
 	}
 	
 	@Test
@@ -75,8 +73,6 @@ public class GoogleTest extends BaseTest {
 		assertTextPresentInElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH,
 				dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_2), 0);
 		takescreenshot("GoogleTest_testCase2_step_3");
-
-		dataProvider.close();
 
 	}
 

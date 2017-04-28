@@ -156,7 +156,7 @@ public abstract class BaseTest {
 	 * @param String valueToCheck - any text
 	 * @param int timeOutInSeconds - if 0, then does not invoke explicit waiting
 	 *            
-	 * 
+	 * TODO: Move WebDriverWait to either BaseTest or BasePage
 	 * 
 	 */
 	public void assertTextPresentInElement(String locator, LocatorType locType, String valueToCheck,
