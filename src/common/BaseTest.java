@@ -87,7 +87,7 @@ public abstract class BaseTest {
 		}
 		// TODO: add Safari and implement WebDriverManager to all Drivers
 
-		// Default timeout setting for our drivers - 10secs
+		// Default timeout setting for all drivers
 		driver.manage().timeouts().implicitlyWait(defaultWDTimeOut, TimeUnit.SECONDS);
 
 		driver.manage().window().maximize();
@@ -156,9 +156,10 @@ public abstract class BaseTest {
 	 * @param String valueToCheck - any text
 	 * @param int timeOutInSeconds - if 0, then does not invoke explicit waiting
 	 *            
-	 * TODO: Move WebDriverWait to either BaseTest or BasePage
+	 * @deprecated Use the BasePage's findElement instead, then call getText()
 	 * 
 	 */
+	@Deprecated
 	public void assertTextPresentInElement(String locator, LocatorType locType, String valueToCheck,
 			int timeOutInSeconds) {
 
@@ -263,7 +264,9 @@ public abstract class BaseTest {
 	 * @param LocatorType locType - i.e LocatorType.XPATH
 	 * @param int timeOutInSeconds - if 0, then does not invoke explicit waiting
 	 * 
+	 * @deprecated Use the BasePage's findElement instead
 	 */
+	@Deprecated
 	public void assertElementPresentInPage(String locator, LocatorType locType, int timeOutInSeconds) {
 
 		Assert.assertTrue(isElementPresent(locator, locType, timeOutInSeconds));

@@ -9,10 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class BasePage {
 
-	/** Timeout for finding page element in seconds */
-	// TODO: move this to settings
-	protected static final long FIND_ELEMENT_TIMEOUT = 30L;
-
 	/** The Selenium2 web driver. */
 	protected WebDriver driver;
 
@@ -21,65 +17,102 @@ public abstract class BasePage {
 	}
 
 	/**
-     * Find the element in the DOM by id.
-     * 
-     * @param elementId the element id
-     * @return the element found
-     */
-    public WebElement findElement(String locator, LocatorType locType)
-    {
-    	WebElement element = null;
+	 * Find the element in the DOM by locator.
+	 * 
+	 * @param locator
+	 *            The locator of the element
+	 * @param locatorType
+	 *            The locator type used
+	 * @param timeOutInSeconds
+	 *            If the web element takes time to load, supply value greater
+	 *            than 0
+	 * 
+	 */
+	public WebElement findElement(String locator, LocatorType locatorType, int timeOutInSeconds) {
+		WebElement element = null;
 
-        try
-        {
-        	if(locType.equals(LocatorType.ID)){
-            return new WebDriverWait(driver, FIND_ELEMENT_TIMEOUT)
-			.until(ExpectedConditions.presenceOfElementLocated(By.id(locator)));
-            
-        	} else if (locType.equals(LocatorType.NAME)){        		
-                return new WebDriverWait(driver, FIND_ELEMENT_TIMEOUT)
-            			.until(ExpectedConditions.presenceOfElementLocated(By.name(locator)));
-            
-            } else if (locType.equals(LocatorType.LINKTEXT)){        		
-                return new WebDriverWait(driver, FIND_ELEMENT_TIMEOUT)
-            			.until(ExpectedConditions.presenceOfElementLocated(By.linkText(locator)));
-                
-            } else if (locType.equals(LocatorType.PARTIALLINKTEXT)){        		
-                return new WebDriverWait(driver, FIND_ELEMENT_TIMEOUT)
-            			.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(locator)));
-                
-            } else if (locType.equals(LocatorType.CSS)){        		
-                return new WebDriverWait(driver, FIND_ELEMENT_TIMEOUT)
-            			.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(locator)));
-                
-            } else if (locType.equals(LocatorType.CLASS)){        		
-                return new WebDriverWait(driver, FIND_ELEMENT_TIMEOUT)
-            			.until(ExpectedConditions.presenceOfElementLocated(By.className(locator)));
-                
-            } else{        		
-                return new WebDriverWait(driver, FIND_ELEMENT_TIMEOUT)
-            			.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator)));
-            }
-        }
-        catch (Exception e)
-        {
-            Logger.log("Element is not found");
-            return element;
-            
-        	}
-    	}
+		try {
+			if (timeOutInSeconds > 0) {
+				if (locatorType.equals(LocatorType.ID)) {
+					return new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.id(locator)));
+
+				} else if (locatorType.equals(LocatorType.NAME)) {
+					return new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.name(locator)));
+
+				} else if (locatorType.equals(LocatorType.LINKTEXT)) {
+					return new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.linkText(locator)));
+
+				} else if (locatorType.equals(LocatorType.PARTIALLINKTEXT)) {
+					return new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(locator)));
+
+				} else if (locatorType.equals(LocatorType.CSS)) {
+					return new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(locator)));
+
+				} else if (locatorType.equals(LocatorType.CLASS)) {
+					return new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.className(locator)));
+
+				} else if (locatorType.equals(LocatorType.XPATH)) {
+					return new WebDriverWait(driver, timeOutInSeconds)
+							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator)));
+				} else {
+					throw new Exception("Unknown Locator");
+				}
+			}
+			// Else use WebDriver's default timeout settings
+			else {
+				if (locatorType.equals(LocatorType.ID)) {
+					return driver.findElement(By.id(locator));
+
+				} else if (locatorType.equals(LocatorType.NAME)) {
+					return driver.findElement(By.name(locator));
+
+				} else if (locatorType.equals(LocatorType.LINKTEXT)) {
+					return driver.findElement(By.linkText(locator));
+
+				} else if (locatorType.equals(LocatorType.PARTIALLINKTEXT)) {
+					return driver.findElement(By.partialLinkText(locator));
+
+				} else if (locatorType.equals(LocatorType.CSS)) {
+					return driver.findElement(By.cssSelector(locator));
+
+				} else if (locatorType.equals(LocatorType.CLASS)) {
+					return driver.findElement(By.className(locator));
+
+				} else if (locatorType.equals(LocatorType.XPATH)) {
+					return driver.findElement(By.xpath(locator));
+				} else {
+					throw new Exception("Unknown Locator");
+				}
+			}
+		} catch (Exception e) {
+			Logger.log(e.getMessage());
+			Logger.log("Element is not found");
+		}
+		return element;
+	}
 
 	/**
 	 * This method will click a web element
 	 * 
 	 * @param locator
-	 * 
+	 *            The locator of the element
+	 * @param locatorType
+	 *            The locator type used
+	 * @param timeOutInSeconds
+	 *            If the web element takes time to load, supply value greater
+	 *            than 0
 	 * 
 	 */
 
-	public void click(String locator, LocatorType locType) {
+	public void click(String locator, LocatorType locType, int timeOutInSeconds) {
 
-		WebElement element = findElement(locator, locType);
+		WebElement element = findElement(locator, locType, timeOutInSeconds);
 		element.click();
 
 	}
@@ -88,14 +121,18 @@ public abstract class BasePage {
 	 * This method will enter text in a web element
 	 * 
 	 * @param locator
+	 *            The locator of the element
+	 * @param locatorType
+	 *            The locator type used
 	 * @param value
-	 *
-	 *            element.submit();
+	 *            The text to be entered
+	 * @param timeOutInSeconds
+	 *            If web element takes time to load, supply value greater than 0
 	 * 
 	 */
-	public void enterText(String locator, LocatorType locType, String value) {
+	public void enterText(String locator, LocatorType locType, String value, int timeOutInSeconds) {
 
-		WebElement element = findElement(locator, locType);
+		WebElement element = findElement(locator, locType, timeOutInSeconds);
 		element.sendKeys(value);
 
 	}
@@ -104,12 +141,19 @@ public abstract class BasePage {
 	 * This method will select a text value from a dropdown
 	 * 
 	 * @param locator
+	 *            The locator of the element
+	 * @param locatorType
+	 *            The locator type used
 	 * @param value
+	 *            The text to be selected
+	 * @param timeOutInSeconds
+	 *            If web element takes time to load, supply value greater than 0
 	 * 
 	 */
-	public void selectDropdownByVisibleText(String locator, LocatorType locType, String value) {
+	public void selectDropdownByVisibleText(String locator, LocatorType locatorType, int timeOutInSeconds,
+			String value) {
 
-		new Select(findElement(locator, locType)).selectByVisibleText(value);
+		new Select(findElement(locator, locatorType, timeOutInSeconds)).selectByVisibleText(value);
 	}
 
 }

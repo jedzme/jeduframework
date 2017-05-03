@@ -18,14 +18,14 @@ public class GooglePage extends BasePage{
 
 	}
 
-	public void enterSearchBar(String input) throws Exception{
-		enterText(SEARCH_BAR_NAME, LocatorType.NAME, input);
+	public void enterSearchBar(String input, int timeOutInSeconds) throws Exception{
+		enterText(SEARCH_BAR_NAME, LocatorType.NAME, input, timeOutInSeconds);
 		Logger.log("Entered value in search bar: " + input);
 	}	
 	
-	public void clickSearchButton(){
+	public void clickSearchButton(int timeOutInSeconds){
 
-		click(SEARCH_BUTTON_NAME, LocatorType.NAME);
+		click(SEARCH_BUTTON_NAME, LocatorType.NAME, timeOutInSeconds);
 		Logger.log("Clicked search button...");
 	}
 
