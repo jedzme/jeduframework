@@ -43,8 +43,9 @@ public class GoogleTest extends BaseTest {
 		takescreenshot("GoogleTest_testCase1_step_2");
 		googlePage.clickSearchButton(0);
 		
-		Assert.assertTrue(googlePage.findElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH, 0).getText()
-				.equalsIgnoreCase(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_1)));
+		// add here whatever you want to assert 
+//		Assert.assertTrue(googlePage.findElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH, 0).getText()
+//				.equalsIgnoreCase(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_1)));
 		takescreenshot("GoogleTest_testCase1_step_3");
 
 	}
@@ -69,8 +70,9 @@ public class GoogleTest extends BaseTest {
 		takescreenshot("GoogleTest_testCase2_step_2");
 		googlePage.clickSearchButton(0);
 
-		Assert.assertTrue(googlePage.findElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH, 0).getText()
-				.equalsIgnoreCase(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_2)));
+		// add here whatever you want to assert
+//		Assert.assertTrue(googlePage.findElement(GooglePage.EXPECTED_ELEMENT_XPATH, LocatorType.XPATH, 0).getText()
+//				.equalsIgnoreCase(dataProvider.getCellData(testCaseRow, COLUMN_SAMPLE_EXPECTED_DATA_2)));
 		takescreenshot("GoogleTest_testCase2_step_3");
 
 	}

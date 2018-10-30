@@ -43,7 +43,6 @@ public class ExcelDataProvider extends TestDataProvider {
 
 		try {
 			cell = excelWSheet.getRow(rowNum).getCell(colNum);
-			cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 			cellData = cell.getStringCellValue();
 
 			return cellData;

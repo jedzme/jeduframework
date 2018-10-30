@@ -9,8 +9,8 @@ import common.Logger;
 public class GooglePage extends BasePage{
 
 	public static final String SEARCH_BAR_NAME = "q";
-	public static final String SEARCH_BUTTON_NAME = "btnG";
-	public static final String EXPECTED_ELEMENT_XPATH = "//*[@id='rhs_block']/div/div[1]/div/div[1]/div[2]/div[1]/div/div[2]/div/div/div[2]/div[1]";
+	public static final String GOOGLE_SEARCH_BUTTON_XPATH = "//input[@value='Google Search' and @name='btnK']";
+	public static final String EXPECTED_ELEMENT_XPATH = "//*[@id=\"rhs_block\"]/div[2]/div[1]/div/div[1]/div[2]/div[2]/div/div[2]/div/div/div[2]/div[1]/span";
 	//public static final String EXPECTED_ELEMENT_XPATH = "//*[@id='rhs_block']/div/div[1]/div/div[1]/div[2]/div[1]/div/div[2]/div/div]";
 
 	public GooglePage(WebDriver driver) {
@@ -25,7 +25,7 @@ public class GooglePage extends BasePage{
 	
 	public void clickSearchButton(int timeOutInSeconds){
 
-		click(SEARCH_BUTTON_NAME, LocatorType.NAME, timeOutInSeconds);
+		click(GOOGLE_SEARCH_BUTTON_XPATH, LocatorType.NAME, timeOutInSeconds);
 		Logger.log("Clicked search button...");
 	}
 

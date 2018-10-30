@@ -7,7 +7,7 @@
 	<parameter name="screenShotsPath" value="C:\\testscreenshots\\" />
 	<test name="Sample Test in Chrome">
 		<parameter name="browser" value="Chrome" />
-		<parameter name="driverPath" value="resources\\drivers\\chromedriver_2.29.exe" />
+		<parameter name="driverPath" value="resources\\drivers\\chromedriver.exe" />
 		<classes>
 			<class name="test.GoogleTest" />
 		</classes>

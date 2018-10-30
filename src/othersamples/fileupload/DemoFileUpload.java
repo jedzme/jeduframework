@@ -16,7 +16,7 @@ public class DemoFileUpload {
 		// System.setProperty("webdriver.edge.driver",
 		// "resources\\drivers\\MicrosoftWebDriver_3.14393.exe");
 
-		System.setProperty("webdriver.chrome.driver", "resources\\drivers\\chromedriver_2.29.exe");
+		System.setProperty("webdriver.chrome.driver", "resources\\drivers\\chromedriver.exe");
 
 		WebDriver driver = new ChromeDriver();
 
@@ -28,9 +28,12 @@ public class DemoFileUpload {
 
 		driver.get("file:///" + directory + "/etc/samplepages/fileUploadSample.html");
 
-		// You need to install AutoIT3 inorder to run the exec file
+		// You need to install AutoIT3 inorder to edit the .au3 files in etc\\autoitscripts64\\uncompiled
 		// visit https://www.autoitscript.com/site/autoit/downloads/
-		Runtime.getRuntime().exec("etc\\autoitscriptsx64\\compiled\\fileupload.exe");
+		
+		//We can use Runtime.getRuntime() or the ProcessBuilder 
+		//Runtime.getRuntime().exec("etc\\autoitscriptsx64\\compiled\\fileupload.exe");
+		Process process = new ProcessBuilder("etc\\autoitscriptsx64\\compiled\\fileupload.exe").start();
 
 		driver.findElement(By.xpath(".//*[@id='btnUpload']")).click();
 
